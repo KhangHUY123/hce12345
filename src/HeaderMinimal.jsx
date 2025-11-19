@@ -6,22 +6,30 @@ const HeaderMinimal = ({ cartItemCount }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
-  // Đọc trạng thái người dùng từ localStorage
+  // Load user từ localStorage khi mở trang
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
-      setUser(JSON.parse(userData)); // Đồng bộ trạng thái user từ localStorage
+      setUser(JSON.parse(userData));
     }
-  }, []); // Chỉ chạy một lần khi component mount
+  }, []);
 
-  // Hàm xử lý đăng xuất
   const handleLogout = () => {
-    localStorage.removeItem("user"); // Xóa thông tin người dùng khỏi localStorage
-    setUser(null); // Cập nhật lại trạng thái người dùng trong ứng dụng
-    navigate("/"); // Điều hướng về trang chủ
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/");
   };
 
-  const isAdmin = user && user.role === "admin";
+  // ROLE admin = 1
+  const isAdmin = user && user.role === 1;
+
+  // Khi bấm vào Admin Dashboard
+  const handleAdminClick = (e) => {
+    if (!isAdmin) {
+      e.preventDefault(); // chặn điều hướng
+      alert("❌ Bạn không có quyền truy cập trang Admin!");
+    }
+  };
 
   return (
     <header className="header-minimal">
@@ -35,45 +43,33 @@ const HeaderMinimal = ({ cartItemCount }) => {
         </Link>
       </div>
 
-      {/* Menu */}
       <nav className="nav-menu">
-        <NavLink
-          to="/Trang2"
-          className="nav-item"
-          activeClassName="active-nav-item"
-        >
+        <NavLink to="/Trang2" className="nav-item">
           Home
         </NavLink>
-        <NavLink
-          to="/about"
-          className="nav-item"
-          activeClassName="active-nav-item"
-        >
+
+        <NavLink to="/about" className="nav-item">
           About Us
         </NavLink>
-        <NavLink to="/" className="nav-item" activeClassName="active-nav-item">
+
+        <NavLink to="/" className="nav-item">
           Shop
         </NavLink>
-        <NavLink
-          to="/Trang1"
-          className="nav-item"
-          activeClassName="active-nav-item"
-        >
+
+        <NavLink to="/Trang1" className="nav-item">
           Contact Us
         </NavLink>
 
-        {/* Hiển thị Admin Dashboard khi là Admin */}
-        {isAdmin && (
-          <NavLink
-            to="/admin/products"
-            className="nav-item nav-admin"
-            activeClassName="active-nav-item"
-          >
-            Admin Dashboard
-          </NavLink>
-        )}
+        {/* luôn hiện Admin Dashboard */}
+        <NavLink
+          to="/admin/products"
+          className={`nav-item nav-admin ${!isAdmin ? "disabled-admin" : ""}`}
+          onClick={handleAdminClick}
+        >
+          Admin Dashboard
+        </NavLink>
 
-        {/* Hiển thị Login/Logout */}
+        {/* Hiện login / logout */}
         {user ? (
           <button
             onClick={handleLogout}
@@ -88,11 +84,7 @@ const HeaderMinimal = ({ cartItemCount }) => {
             Logout ({user.username})
           </button>
         ) : (
-          <NavLink
-            to="/login"
-            className="nav-item"
-            activeClassName="active-nav-item"
-          >
+          <NavLink to="/login" className="nav-item">
             Login
           </NavLink>
         )}

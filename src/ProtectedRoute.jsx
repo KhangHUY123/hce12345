@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from "react"; // <--- Cần import useEffect và useState
+import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children, roleRequired }) => {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Thêm trạng thái loading
 
+  // Kiểm tra user mỗi lần render
   useEffect(() => {
-    // Chỉ chạy khi component mount
     const userData = localStorage.getItem("user");
-    if (userData) {
-      setUser(JSON.parse(userData));
-    }
-    setLoading(false); // Đánh dấu đã đọc xong localStorage
-  }, []);
+    setUser(userData ? JSON.parse(userData) : null);
+    setLoading(false);
+  });
 
-  const required = roleRequired || "user";
-
-  // --- 1. CHỜ ĐỌC DỮ LIỆU ---
   if (loading) {
-    // Hiển thị màn hình chờ (hoặc null) trong khi đọc localStorage
     return (
       <div style={{ textAlign: "center", padding: "50px" }}>
         Đang kiểm tra quyền...
@@ -26,7 +20,7 @@ const ProtectedRoute = ({ children, roleRequired }) => {
     );
   }
 
-  // --- 2. KIỂM TRA ĐĂNG NHẬP ---
+  // Chưa login
   if (!user) {
     return (
       <Navigate
@@ -37,13 +31,13 @@ const ProtectedRoute = ({ children, roleRequired }) => {
     );
   }
 
-  // --- 3. KIỂM TRA QUYỀN TRUY CẬP (ROLE) ---
-  // if (required === "admin" && user.role !== "admin") {
-  //   alert("❌ Bạn không có quyền truy cập trang quản trị!");
-  //   return <Navigate to="/" replace />;
-  // }
+  // Kiểm tra quyền admin
+  if (roleRequired === "admin" && user.role !== 1) {
+    alert("❌ Bạn không có quyền truy cập trang quản trị!");
+    return <Navigate to="/" replace />;
+  }
 
-  // --- 4. TRUY CẬP HỢP LỆ ---
+  // Truy cập hợp lệ
   return children;
 };
 
