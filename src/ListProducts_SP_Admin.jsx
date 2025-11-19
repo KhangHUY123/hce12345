@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "./supabaseClient";
+import { useNavigate } from "react-router-dom"; // 👈 Đã thêm
 import "./assets/css/quanlysp.css";
 
 const ListProducts_SP_Admin = () => {
@@ -13,6 +14,8 @@ const ListProducts_SP_Admin = () => {
     rating_count: "",
   });
 
+  const navigate = useNavigate(); // 👈 Khởi tạo hook
+
   const fetchProducts = async () => {
     const { data, error } = await supabase
       .from("product1")
@@ -24,6 +27,14 @@ const ListProducts_SP_Admin = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  // Hàm xử lý Đăng xuất
+  const handleLogout = () => {
+    // 1. Xóa thông tin user khỏi localStorage (Quan trọng nhất)
+    localStorage.removeItem("user");
+    // 2. Chuyển hướng người dùng về trang login
+    navigate("/login");
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,10 +88,7 @@ const ListProducts_SP_Admin = () => {
       {/* Nút Đăng xuất */}
       <div className="flex justify-end mb-4">
         <button
-          onClick={() => {
-            localStorage.removeItem("user");
-            window.location.href = "/login";
-          }}
+          onClick={handleLogout} // 👈 Gọi hàm xử lý Đăng xuất
           className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md transition"
         >
           Đăng xuất
@@ -91,7 +99,7 @@ const ListProducts_SP_Admin = () => {
         🛠️ Quản Lý Sản Phẩm (Admin)
       </h2>
 
-      {/* Form */}
+      {/* Form Thêm/Sửa */}
       <form
         onSubmit={editingProduct ? handleEdit : handleAdd}
         className="bg-white shadow-xl rounded-xl p-6 mb-10 max-w-2xl mx-auto border border-gray-200"
