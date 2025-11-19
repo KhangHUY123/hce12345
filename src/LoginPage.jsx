@@ -1,100 +1,95 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "./supabaseClient";
+import crypto from "crypto-js";
 import anhlogo1 from "./assets/images/keylogin.png";
 import "./assets/css/login.css";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-    // Thêm kiểu cho TS
+  // LOGIN
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
-      // 1. KIỂM TRA TÀI KHOẢN ADMIN ĐẶC BIỆT
-      if (username === "admin" && password === "123") {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ username: "admin", role: "admin" }) // <--- LƯU ROLE LÀ ADMIN
-        );
-        alert("✅ Đăng nhập Admin thành công!");
-        navigate("/admin/products"); // Chuyển đến trang Admin
+    // 1. Lấy user theo email trong tbl_user
+    const { data: users, error } = await supabase
+      .from("tbl_user")
+      .select("*")
+      .eq("email", email)
+      .limit(1);
 
-        // 2. KIỂM TRA TÀI KHOẢN USER THÔNG THƯỜNG
-      } else if (username.trim() && password.trim()) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ username, role: "user" }) // <--- LƯU ROLE LÀ USER
-        );
-        alert("✅ Đăng nhập thành công!");
-        navigate("/"); // Chuyển về trang chủ
-      } else {
-        alert("❌ Vui lòng nhập đầy đủ thông tin!");
-      }
+    if (!users || users.length === 0) {
+      alert("❌ Email không tồn tại!");
       setLoading(false);
-    }, 1000);
+      return;
+    }
+
+    const user = users[0];
+
+    // 2. Hash mật khẩu nhập vào bằng SHA-256
+    const inputHash = crypto.SHA256(password).toString();
+
+    if (inputHash !== user.password_hash) {
+      alert("❌ Mật khẩu sai!");
+      setLoading(false);
+      return;
+    }
+
+    // 3. Lưu user vào localStorage
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        id: user.id,
+        username: user.username,
+        role: user.role,
+      })
+    );
+
+    // 4. Điều hướng theo role
+    if (user.role === 1) {
+      alert("✅ Đăng nhập Admin thành công!");
+      navigate("/admin/products");
+    } else {
+      alert("✅ Đăng nhập thành công!");
+      navigate("/");
+    }
+
+    setLoading(false);
   };
 
   return (
-    // ... (Phần giao diện giữ nguyên)
     <div className="login-wrapper">
       <div className="login-card">
-        <img src={anhlogo1} alt="Logo.png" className="login-logo" />
+        <img src={anhlogo1} alt="logo" className="login-logo" />
 
-        <h2 className="login-title">Đăng nhập vào tài khoản</h2>
-        <p className="login-subtitle">Sử dụng tài khoản của bạn để tiếp tục</p>
+        <h2 className="login-title">Đăng nhập</h2>
 
         <form onSubmit={handleLogin} className="login-form">
-          <div className="form-group">
-            <label>Tên đăng nhập</label>
-            <input
-              type="text"
-              placeholder="Nhập tên đăng nhập..."
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
+          <label>Email</label>
+          <input
+            type="email"
+            placeholder="Nhập email..."
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-          <div className="form-group">
-            <label>Mật khẩu</label>
-            <input
-              type="password"
-              placeholder="Nhập mật khẩu..."
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+          <label>Mật khẩu</label>
+          <input
+            type="password"
+            placeholder="Nhập mật khẩu..."
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <button type="submit" disabled={loading}>
-            {loading ? "⏳ Đang xử lý..." : "Đăng nhập"}
+            {loading ? "Đang đăng nhập..." : "Đăng nhập"}
           </button>
         </form>
-
-        <p className="register-link">
-          Bạn chưa có tài khoản? <a href="#">Tạo tài khoản mới</a>
-        </p>
-
-        <div className="social-login">
-          <button className="social-btn google">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/0/09/IOS_Google_icon.png"
-              alt="Google"
-            />
-            <span>Đăng nhập Google</span>
-          </button>
-
-          <button className="social-btn facebook">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
-              alt="Facebook"
-            />
-            <span>Facebook</span>
-          </button>
-        </div>
       </div>
     </div>
   );
