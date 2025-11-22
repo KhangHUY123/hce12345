@@ -1,8 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "./supabaseClient";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+
+  // ⭐ Kiểm tra trạng thái đăng nhập với Supabase v2
+  useEffect(() => {
+    const checkLogin = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+    checkLogin();
+
+    // Theo dõi thay đổi trạng thái đăng nhập
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setIsLoggedIn(!!session);
+      }
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
 
   // ⭐ Load giỏ hàng + fetch sản phẩm từ Supabase
   useEffect(() => {
@@ -22,7 +50,6 @@ const Cart = () => {
         return;
       }
 
-      // Gộp quantity với data Supabase
       const merged = data.map((product) => {
         const cartItem = cart.find((c) => c.id === product.id);
         return { ...product, quantity: cartItem.quantity };
@@ -34,27 +61,23 @@ const Cart = () => {
     fetchProducts();
   }, []);
 
-  // ⭐ Lưu giỏ hàng vào localStorage khi cập nhật
+  // Các hàm tăng/giảm/xóa sản phẩm + lưu localStorage giữ nguyên
   const updateLocalStorage = (items) => {
     const cart = items.map((item) => ({
       id: item.id,
       quantity: item.quantity,
     }));
-
     localStorage.setItem("cart", JSON.stringify(cart));
   };
 
-  // ⭐ Tăng số lượng
   const increaseQty = (id) => {
     const updated = cartItems.map((item) =>
       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
     );
-
     setCartItems(updated);
     updateLocalStorage(updated);
   };
 
-  // ⭐ Giảm số lượng (không giảm dưới 1)
   const decreaseQty = (id) => {
     const updated = cartItems
       .map((item) =>
@@ -68,18 +91,28 @@ const Cart = () => {
     updateLocalStorage(updated);
   };
 
-  // ⭐ Xóa sản phẩm khỏi giỏ hàng
   const removeItem = (id) => {
     const updated = cartItems.filter((item) => item.id !== id);
     setCartItems(updated);
     updateLocalStorage(updated);
   };
 
-  // ⭐ Tổng tiền
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
+  const handleCheckout = () => {
+    if (!isLoggedIn) {
+      alert("Vui lòng đăng nhập để thanh toán.");
+      navigate("/login");
+      return;
+    }
+
+    setPaymentSuccess(true);
+    localStorage.removeItem("cart");
+    setCartItems([]);
+  };
 
   return (
     <div style={{ maxWidth: "800px", margin: "30px auto", padding: "20px" }}>
@@ -100,55 +133,23 @@ const Cart = () => {
                 gap: "20px",
               }}
             >
-              {/* Hình ảnh */}
               <img src={item.image} alt="" style={{ width: "80px" }} />
-
-              {/* Tên & giá */}
               <div style={{ flex: 1 }}>
                 <h4 style={{ margin: 0 }}>{item.title}</h4>
                 <p style={{ margin: 0, color: "#e63946" }}>${item.price}</p>
               </div>
-
-              {/* Tăng giảm số lượng */}
               <div>
-                <button
-                  onClick={() => decreaseQty(item.id)}
-                  style={{
-                    padding: "4px 8px",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                  }}
-                >
-                  -
-                </button>
-
-                <span style={{ margin: "0 10px", fontSize: "18px" }}>
-                  {item.quantity}
-                </span>
-
-                <button
-                  onClick={() => increaseQty(item.id)}
-                  style={{
-                    padding: "4px 8px",
-                    fontSize: "16px",
-                    cursor: "pointer",
-                  }}
-                >
-                  +
-                </button>
+                <button onClick={() => decreaseQty(item.id)}>-</button>
+                <span style={{ margin: "0 10px" }}>{item.quantity}</span>
+                <button onClick={() => increaseQty(item.id)}>+</button>
               </div>
-
-              {/* Nút xóa */}
               <button
                 onClick={() => removeItem(item.id)}
                 style={{
-                  marginLeft: "20px",
                   background: "red",
                   color: "white",
                   border: "none",
                   padding: "6px 12px",
-                  borderRadius: "4px",
-                  cursor: "pointer",
                 }}
               >
                 Xóa
@@ -156,11 +157,40 @@ const Cart = () => {
             </div>
           ))}
 
-          {/* Tổng tiền */}
           <h3 style={{ marginTop: "20px" }}>
             Tổng tiền:{" "}
             <span style={{ color: "#e63946" }}>${total.toFixed(2)}</span>
           </h3>
+
+          <button
+            onClick={handleCheckout}
+            style={{
+              padding: "12px 25px",
+              backgroundColor: "#2ecc71",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginTop: "20px",
+            }}
+          >
+            Thanh toán
+          </button>
+
+          {paymentSuccess && (
+            <div
+              style={{
+                marginTop: "20px",
+                padding: "15px",
+                backgroundColor: "#2ecc71",
+                color: "white",
+                borderRadius: "5px",
+                textAlign: "center",
+              }}
+            >
+              Thanh toán thành công! Cảm ơn bạn đã mua sắm.
+            </div>
+          )}
         </div>
       )}
     </div>

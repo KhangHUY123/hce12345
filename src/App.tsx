@@ -1,5 +1,6 @@
 import "./styles.css";
 // @ts-ignore
+
 import Home from "./Home";
 // @ts-ignore
 import Layout from "./Layout";

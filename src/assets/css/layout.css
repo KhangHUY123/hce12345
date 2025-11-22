@@ -1,66 +1,121 @@
-body {
+/* Reset cơ bản */
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+body {
+  font-family: "Times New Roman", Times, serif;
+  background-color: #f8f8f8;
+}
+
+/* ---------------- Banner trên cùng ---------------- */
 .banne {
-  height: 63px; /* Giảm chiều cao xuống một nửa */
+  min-height: 50px; /* Banner nhỏ, vừa đủ hiển thị text */
+  padding: 0 15px;
   background-color: #fff;
   display: flex;
-  flex-direction: row;
-  text-align: center;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
 }
 
+/* ---------------- Header chính ---------------- */
 .header {
   display: flex;
   flex-direction: column;
-  height: 180px;
   background-color: #fff;
+  min-height: 120px; /* header gọn hơn */
+  border-bottom: 1px solid #ccc;
 }
+
+/* Menu trái */
 .menutrai {
   display: flex;
   flex-direction: row;
-  width: 270px;
+  gap: 15px;
+  padding: 10px 15px;
+  flex-wrap: wrap;
 }
 
-.menubar {
-  background-color: #b22d30;
-  height: 52px;
+/* Menu item */
+.menutrai ul {
+  display: flex;
+  list-style: none;
+  gap: 15px;
 }
 
-#menutrai {
-  font-family: "Times New Roman", Times, serif;
-  font-size: 13px;
+.menutrai ul li {
+  max-width: 120px;
 }
 
-#menutrai ul {
-  margin-right: 10px;
-}
-
-#menutrai ul li {
-  list-style-type: none;
-  margin-left: 10px;
-  max-width: 80px;
-}
-
-a.menutrai:link,
-a.menutrai:visited {
-  color: #b22d30;
-  font-family: "Times New Roman", Times, serif;
+/* Link menu */
+a.menutrai {
   text-decoration: none;
-}
-
-a.menutrai:visited {
-  font-weight: 700;
+  color: #b22d30;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  font-size: 14px;
 }
 
 a.menutrai:hover {
   color: #5426d1;
-  font-family: "Times New Roman", Times, serif;
 }
 
 a.menutrai:active {
   color: #190c3f;
-  font-family: "Times New Roman", Times, serif;
+}
+
+/* ---------------- Menu bar (nếu có) ---------------- */
+.menubar {
+  background-color: #b22d30;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 768px) {
+  .header {
+    min-height: 100px;
+  }
+
+  .menutrai ul {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .menutrai ul li {
+    max-width: 100%;
+  }
+
+  .banne {
+    font-size: 12px;
+    min-height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    min-height: 90px;
+  }
+
+  .banne {
+    font-size: 11px;
+    min-height: 35px;
+  }
+
+  .menutrai {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .menutrai ul {
+    flex-direction: column;
+  }
 }
