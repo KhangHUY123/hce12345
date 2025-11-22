@@ -23,6 +23,13 @@ const Chitietsanpham: React.FC = () => {
   const [product, setProduct] = useState<ProductState>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null); // Thêm state để quản lý thông báo
+
+  // Giỏ hàng - state localStorage hoặc context nếu cần
+  const [cart, setCart] = useState<ProductData[]>(() => {
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
 
   useEffect(() => {
     if (!id) {
@@ -62,6 +69,23 @@ const Chitietsanpham: React.FC = () => {
     };
     fetchProductDetail();
   }, [id]);
+
+  // Hàm thêm sản phẩm vào giỏ hàng
+  const addToCart = (product: ProductData) => {
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart, product];
+      localStorage.setItem("cart", JSON.stringify(updatedCart)); // Lưu giỏ hàng vào localStorage
+      return updatedCart;
+    });
+
+    // Hiển thị thông báo đã thêm vào giỏ hàng
+    setSuccessMessage(`${product.title} đã được thêm vào giỏ hàng!`);
+
+    // Sau 2 giây, ẩn thông báo
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 2000);
+  };
 
   if (loading) {
     return (
@@ -114,6 +138,23 @@ const Chitietsanpham: React.FC = () => {
       >
         &larr; Quay lại danh sách
       </button>
+
+      {/* Thông báo đã thêm sản phẩm vào giỏ hàng */}
+      {successMessage && (
+        <div
+          style={{
+            marginBottom: "15px",
+            padding: "10px 20px",
+            backgroundColor: "#2ecc71",
+            color: "white",
+            borderRadius: "5px",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
+          {successMessage}
+        </div>
+      )}
 
       <div
         style={{
@@ -189,6 +230,7 @@ const Chitietsanpham: React.FC = () => {
           </p>
 
           <button
+            onClick={() => addToCart(product)} // Gọi hàm thêm vào giỏ hàng khi nhấn nút
             style={{
               padding: "12px 25px",
               backgroundColor: "#2ecc71",
@@ -200,7 +242,7 @@ const Chitietsanpham: React.FC = () => {
               marginTop: "20px",
             }}
           >
-            Thêm vào Giỏ hàng
+            Thêm vào giỏ hàng
           </button>
         </div>
       </div>
