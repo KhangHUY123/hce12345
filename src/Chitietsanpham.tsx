@@ -24,6 +24,12 @@ const Chitietsanpham: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Giỏ hàng - state localStorage hoặc context nếu cần
+  const [cart, setCart] = useState<ProductData[]>(() => {
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  });
+
   useEffect(() => {
     if (!id) {
       setError("Không tìm thấy ID sản phẩm.");
@@ -62,6 +68,15 @@ const Chitietsanpham: React.FC = () => {
     };
     fetchProductDetail();
   }, [id]);
+
+  // Hàm thêm sản phẩm vào giỏ hàng
+  const addToCart = (product: ProductData) => {
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart, product];
+      localStorage.setItem("cart", JSON.stringify(updatedCart)); // Lưu giỏ hàng vào localStorage
+      return updatedCart;
+    });
+  };
 
   if (loading) {
     return (
@@ -189,6 +204,7 @@ const Chitietsanpham: React.FC = () => {
           </p>
 
           <button
+            onClick={() => addToCart(product)} // Gọi hàm thêm vào giỏ hàng khi nhấn nút
             style={{
               padding: "12px 25px",
               backgroundColor: "#2ecc71",
@@ -200,7 +216,7 @@ const Chitietsanpham: React.FC = () => {
               marginTop: "20px",
             }}
           >
-            Thêm vào Giỏ hàng
+            Thêm vào giỏ hàng
           </button>
         </div>
       </div>

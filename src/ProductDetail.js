@@ -27,21 +27,40 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
-  // ⭐ THÊM SẢN PHẨM VÀO GIỎ HÀNG (CHUẨN)
+  // ⭐ Thêm sản phẩm vào giỏ hàng
   const addToCart = () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    const existing = cart.find((item) => item.id === product.id);
-
-    if (existing) {
-      existing.quantity += 1; // Nếu đã có → tăng số lượng
-    } else {
-      cart.push({
-        id: product.id, // Chỉ lưu ID
-        quantity: 1, // Lưu số lượng
-      });
+    if (!product) {
+      alert("Sản phẩm không hợp lệ.");
+      return;
     }
 
+    // Lấy giỏ hàng từ localStorage
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+    const existingProductIndex = cart.findIndex(
+      (item) => item.id === product.id
+    );
+
+    if (existingProductIndex !== -1) {
+      // Nếu có, tăng số lượng
+      cart[existingProductIndex].quantity += 1;
+      console.log(
+        `Sản phẩm ${product.title} đã có trong giỏ hàng, số lượng đã được tăng.`
+      );
+    } else {
+      // Nếu chưa có, thêm sản phẩm mới vào giỏ hàng
+      cart.push({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        image: product.image,
+        quantity: 1,
+      });
+      console.log(`Đã thêm sản phẩm ${product.title} vào giỏ hàng.`);
+    }
+
+    // Lưu lại giỏ hàng vào localStorage
     localStorage.setItem("cart", JSON.stringify(cart));
     alert("Đã thêm vào giỏ hàng!");
   };

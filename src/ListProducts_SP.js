@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// Đảm bảo file này tồn tại và được export (hoặc bạn đã tạo custom.d.ts)
 import { supabase } from "./supabaseClient";
 
 const ListProducts_SP = () => {
-  const [listProduct, setListProduct] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [category, setCategory] = useState(""); // Bộ lọc theo loại
-  const [gender, setGender] = useState(""); // Bộ lọc theo giới tính (Nam, Nữ)
+  const [listProduct, setListProduct] = useState([]); // Lưu tất cả sản phẩm
+  const [filteredProducts, setFilteredProducts] = useState([]); // Lưu các sản phẩm đã lọc
+  const [searchQuery, setSearchQuery] = useState(""); // Từ khóa tìm kiếm
+  const [category, setCategory] = useState(""); // Lọc theo danh mục
+  const [gender, setGender] = useState(""); // Lọc theo giới tính
   const navigate = useNavigate();
 
   // Hàm lấy sản phẩm từ Supabase
@@ -21,8 +20,10 @@ const ListProducts_SP = () => {
           .order("id", { ascending: true });
         if (error) throw error;
 
+        console.log(data); // Kiểm tra dữ liệu từ Supabase
+
         setListProduct(data);
-        setFilteredProducts(data); // Cập nhật filtered products
+        setFilteredProducts(data); // Cập nhật danh sách đã lọc ban đầu
       } catch (err) {
         console.error("Lỗi khi lấy dữ liệu:", err.message);
       }
@@ -42,12 +43,12 @@ const ListProducts_SP = () => {
         );
       }
 
-      // Lọc theo danh mục (Áo vest, Áo khoác, ...)
+      // Lọc theo danh mục
       if (category) {
         filtered = filtered.filter((product) => product.category === category);
       }
 
-      // Lọc theo giới tính (Nam, Nữ)
+      // Lọc theo giới tính
       if (gender) {
         filtered = filtered.filter((product) => product.gender === gender);
       }
@@ -133,80 +134,92 @@ const ListProducts_SP = () => {
           justifyContent: "center",
         }}
       >
-        {filteredProducts.map((p) => (
-          <div
-            key={p.id}
-            onClick={() => navigate(`/sanpham/${p.id}`)}
-            style={{
-              border: "1px solid #e0e0e0",
-              borderRadius: "12px",
-              padding: "15px",
-              textAlign: "center",
-              cursor: "pointer",
-              background: "#ffffff",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-              transition: "transform 0.2s ease, box-shadow 0.2s ease",
-              display: "flex",
-              flexDirection: "column",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-6px)";
-              e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
-            }}
-          >
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((p) => (
             <div
+              key={p.id}
+              onClick={() => navigate(`/sanpham/${p.id}`)}
               style={{
-                width: "100%",
-                height: "220px",
+                border: "1px solid #e0e0e0",
+                borderRadius: "12px",
+                padding: "15px",
+                textAlign: "center",
+                cursor: "pointer",
+                background: "#ffffff",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                overflow: "hidden",
-                borderRadius: "8px",
-                backgroundColor: "#f5f5f5",
-                marginBottom: "10px",
+                flexDirection: "column",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-6px)";
+                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.08)";
               }}
             >
-              <img
-                src={p.image}
-                alt={p.title}
+              <div
                 style={{
                   width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
+                  height: "220px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  overflow: "hidden",
+                  borderRadius: "8px",
+                  backgroundColor: "#f5f5f5",
+                  marginBottom: "10px",
                 }}
-              />
-            </div>
+              >
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
 
-            <h4
-              style={{
-                margin: "10px 0 8px",
-                fontSize: "1.1rem",
-                color: "#333",
-                flexGrow: "1",
-              }}
-            >
-              {p.title}
-            </h4>
-            <p
-              style={{
-                color: "#e63946",
-                fontWeight: "bold",
-                margin: "0 0 5px",
-                fontSize: "1.15rem",
-              }}
-            >
-              ${typeof p.price === "number" ? p.price.toFixed(2) : p.price}
-            </p>
-            <small style={{ color: "#777", fontSize: "0.9rem" }}>
-              ⭐ {p.rating_rate} | ({p.rating_count} đánh giá)
-            </small>
+              <h4
+                style={{
+                  margin: "10px 0 8px",
+                  fontSize: "1.1rem",
+                  color: "#333",
+                  flexGrow: "1",
+                }}
+              >
+                {p.title}
+              </h4>
+              <p
+                style={{
+                  color: "#e63946",
+                  fontWeight: "bold",
+                  margin: "0 0 5px",
+                  fontSize: "1.15rem",
+                }}
+              >
+                ${typeof p.price === "number" ? p.price.toFixed(2) : p.price}
+              </p>
+              <small style={{ color: "#777", fontSize: "0.9rem" }}>
+                ⭐ {p.rating_rate} | ({p.rating_count} đánh giá)
+              </small>
+            </div>
+          ))
+        ) : (
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "1.2rem",
+              color: "#e63946",
+            }}
+          >
+            Không tìm thấy sản phẩm nào
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

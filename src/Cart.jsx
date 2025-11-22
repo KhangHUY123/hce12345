@@ -4,7 +4,7 @@ import { supabase } from "./supabaseClient";
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
 
-  // ⭐ Load giỏ hàng + fetch sản phẩm từ Supabase
+  // ⭐ Load giỏ hàng từ localStorage và lấy thông tin sản phẩm từ Supabase
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     if (cart.length === 0) return;
@@ -22,7 +22,7 @@ const Cart = () => {
         return;
       }
 
-      // Gộp quantity với data Supabase
+      // Gộp quantity với dữ liệu sản phẩm từ Supabase
       const merged = data.map((product) => {
         const cartItem = cart.find((c) => c.id === product.id);
         return { ...product, quantity: cartItem.quantity };
@@ -34,7 +34,7 @@ const Cart = () => {
     fetchProducts();
   }, []);
 
-  // ⭐ Lưu giỏ hàng vào localStorage khi cập nhật
+  // ⭐ Cập nhật giỏ hàng vào localStorage
   const updateLocalStorage = (items) => {
     const cart = items.map((item) => ({
       id: item.id,
