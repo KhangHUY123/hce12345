@@ -7,6 +7,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const navigate = useNavigate();
 
+  // ⭐ Lấy dữ liệu sản phẩm theo ID từ Supabase
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -26,21 +27,22 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
-  // ⭐ HÀM THÊM SẢN PHẨM VÀO GIỎ HÀNG
+  // ⭐ THÊM SẢN PHẨM VÀO GIỎ HÀNG (CHUẨN)
   const addToCart = () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Thêm sản phẩm vào mảng giỏ hàng
-    cart.push({
-      id: product.id,
-      title: product.title,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
-    });
+    const existing = cart.find((item) => item.id === product.id);
+
+    if (existing) {
+      existing.quantity += 1; // Nếu đã có → tăng số lượng
+    } else {
+      cart.push({
+        id: product.id, // Chỉ lưu ID
+        quantity: 1, // Lưu số lượng
+      });
+    }
 
     localStorage.setItem("cart", JSON.stringify(cart));
-
     alert("Đã thêm vào giỏ hàng!");
   };
 
