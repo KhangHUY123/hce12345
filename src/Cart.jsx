@@ -7,8 +7,9 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [total, setTotal] = useState(0);
 
-  // ⭐ Kiểm tra trạng thái đăng nhập với Supabase v2
+  // Kiểm tra trạng thái đăng nhập với Supabase v2
   useEffect(() => {
     const checkLogin = async () => {
       const { data } = await supabase.auth.getSession();
@@ -32,7 +33,7 @@ const Cart = () => {
     };
   }, []);
 
-  // ⭐ Load giỏ hàng + fetch sản phẩm từ Supabase
+  // Load giỏ hàng và fetch sản phẩm từ Supabase
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     if (cart.length === 0) return;
@@ -61,7 +62,7 @@ const Cart = () => {
     fetchProducts();
   }, []);
 
-  // Các hàm tăng/giảm/xóa sản phẩm + lưu localStorage giữ nguyên
+  // Cập nhật localStorage khi giỏ hàng thay đổi
   const updateLocalStorage = (items) => {
     const cart = items.map((item) => ({
       id: item.id,
@@ -70,6 +71,16 @@ const Cart = () => {
     localStorage.setItem("cart", JSON.stringify(cart));
   };
 
+  // Tính tổng tiền
+  useEffect(() => {
+    const newTotal = cartItems.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+    setTotal(newTotal);
+  }, [cartItems]);
+
+  // Các hàm tăng/giảm/xóa sản phẩm
   const increaseQty = (id) => {
     const updated = cartItems.map((item) =>
       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
@@ -97,11 +108,7 @@ const Cart = () => {
     updateLocalStorage(updated);
   };
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
-
+  // Xử lý thanh toán
   const handleCheckout = () => {
     if (!isLoggedIn) {
       alert("Vui lòng đăng nhập để thanh toán.");
