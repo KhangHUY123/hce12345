@@ -71,57 +71,96 @@ const ListProducts_SP = () => {
         Danh sách sản phẩm
       </h2>
 
-      {/* Tìm kiếm */}
-      <div style={{ marginBottom: "20px", textAlign: "left" }}>
-        <input
-          type="text"
-          placeholder="Tìm kiếm sản phẩm..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+      {/* Tìm kiếm và Bộ lọc nằm ngang */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        {/* Thanh tìm kiếm */}
+        <div
           style={{
-            padding: "10px",
+            position: "relative",
+            display: "inline-block",
             width: "300px",
-            fontSize: "1rem",
-            marginRight: "10px",
-            borderRadius: "5px",
-            border: "1px solid #ddd",
-          }}
-        />
-      </div>
-
-      {/* Bộ lọc sản phẩm */}
-      <div style={{ marginBottom: "20px", textAlign: "center" }}>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          style={{
-            padding: "10px",
-            marginRight: "10px",
-            borderRadius: "5px",
-            border: "1px solid #ddd",
           }}
         >
-          <option value="">Chọn danh mục</option>
-          <option value="Áo vest">Áo vest</option>
-          <option value="Áo khoác">Áo khoác</option>
-          <option value="Quần">Quần</option>
-          <option value="Giày">Giày</option>
-        </select>
+          <input
+            type="text"
+            placeholder="Tìm kiếm sản phẩm..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{
+              padding: "10px 15px", // Chỉnh padding để tạo khoảng trống bên trái cho biểu tượng
+              paddingLeft: "35px", // Tạo khoảng cách cho biểu tượng
+              width: "100%",
+              fontSize: "1rem",
+              marginRight: "10px",
+              borderRadius: "5px",
+              border: "1px solid #ddd",
+              transition: "border-color 0.3s",
+            }}
+          />
+          {/* Biểu tượng tìm kiếm */}
+          <span
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "10px",
+              transform: "translateY(-50%)",
+              fontSize: "1.2rem",
+              color: "#888",
+            }}
+          >
+            🔍
+          </span>
+        </div>
 
-        <select
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          style={{
-            padding: "10px",
-            marginRight: "10px",
-            borderRadius: "5px",
-            border: "1px solid #ddd",
-          }}
-        >
-          <option value="">Chọn giới tính</option>
-          <option value="Nam">Nam</option>
-          <option value="Nữ">Nữ</option>
-        </select>
+        {/* Bộ lọc (Danh mục & Giới tính) */}
+        <div style={{ display: "flex", gap: "10px" }}>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "5px",
+              border: "1px solid #ddd",
+              backgroundColor: "#0062cc", // Màu nền xanh đậm
+              color: "white", // Màu chữ trắng
+              fontSize: "1rem",
+              transition: "all 0.3s",
+              cursor: "pointer",
+            }}
+          >
+            <option value="">Chọn danh mục</option>
+            <option value="Áo vest">Áo vest</option>
+            <option value="Áo khoác">Áo khoác</option>
+            <option value="Quần">Quần</option>
+            <option value="Giày">Giày</option>
+          </select>
+
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            style={{
+              padding: "10px",
+              borderRadius: "5px",
+              border: "1px solid #ddd",
+              backgroundColor: "#0062cc", // Màu nền xanh đậm
+              color: "white", // Màu chữ trắng
+              fontSize: "1rem",
+              transition: "all 0.3s",
+              cursor: "pointer",
+            }}
+          >
+            <option value="">Chọn giới tính</option>
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+          </select>
+        </div>
       </div>
 
       {/* Danh sách sản phẩm */}
