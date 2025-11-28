@@ -1,12 +1,62 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// Đảm bảo file này tồn tại và được export (hoặc bạn đã tạo custom.d.ts)
 import { supabase } from "./supabaseClient";
 
 const HomePage = () => {
   const [listProduct, setListProduct] = useState([]);
   const navigate = useNavigate();
 
+  // === SLIDER DATA ===
+  const slides = [
+    {
+      image:
+        "https://thietkewebchuyen.com/wp-content/uploads/thiet-ke-banner-website-anh-bia-Facebook-shop-thoi-trang-quan-ao-4.jpg",
+      title: "Chào mừng đến với trang chủ của chúng tôi!",
+      subtitle: "Khám phá các sản phẩm nổi bật!",
+    },
+    {
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXaHf1hHNZ4-ardGu1OK7m9XQEEkC9YVTJ4Q&s",
+      title: "Khuyến mãi hấp dẫn!",
+      subtitle: "Sản phẩm giảm giá sốc hôm nay!",
+    },
+    {
+      image: "https://via.placeholder.com/1200x350/00ccff",
+      title: "Sản phẩm mới cập bến!",
+      subtitle: "Xu hướng mới nhất dành cho bạn!",
+    },
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const navBtnStyle = {
+    position: "absolute",
+    top: "50%",
+    transform: "translateY(-50%)",
+    background: "rgba(255, 255, 255, 0.7)",
+    border: "none",
+    padding: "10px 15px",
+    borderRadius: "50%",
+    cursor: "pointer",
+    fontSize: "20px",
+    fontWeight: "bold",
+    transition: "0.3s",
+  };
+
+  // === FETCH PRODUCT ===
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -14,7 +64,7 @@ const HomePage = () => {
           .from("product1")
           .select("*")
           .order("id", { ascending: true })
-          .limit(4); // Lấy tối đa 4 sản phẩm
+          .limit(4);
         if (error) throw error;
 
         setListProduct(data);
@@ -27,35 +77,85 @@ const HomePage = () => {
 
   return (
     <div style={{ padding: "0 20px" }}>
-      {/* Banner Section */}
-      <div
-        style={{
-          width: "100%",
-          height: "350px",
-          backgroundImage: "url('https://via.placeholder.com/1200x350')", // Thay đổi hình ảnh banner tại đây
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          borderRadius: "10px",
-          marginBottom: "30px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "#000", // Đổi màu chữ thành đen
-          textAlign: "center",
-          padding: "20px",
-        }}
-      >
-        <div>
-          <h1 style={{ fontSize: "2.5rem", fontWeight: "bold" }}>
-            Chào mừng đến với trang chủ của chúng tôi!
-          </h1>
-          <p style={{ fontSize: "1.25rem" }}>
-            Khám phá các sản phẩm nổi bật của chúng tôi!
-          </p>
+      {/* ==== SLIDER ==== */}
+      <div style={{ width: "100%", marginBottom: "30px" }}>
+        <div
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: "10px",
+            height: "350px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              width: `${slides.length * 100}%`,
+              transform: `translateX(-${currentSlide * 100}%)`,
+              transition: "transform 0.6s ease",
+            }}
+          >
+            {slides.map((slide, index) => (
+              <div
+                key={index}
+                style={{
+                  width: "100%",
+                  flexShrink: 0,
+                  height: "350px",
+                  backgroundImage: `url(${slide.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  color: "#000",
+                  textAlign: "center",
+                  padding: "20px",
+                }}
+              >
+                <div>
+                  <h1 style={{ fontSize: "2.5rem", fontWeight: "bold" }}>
+                    {slide.title}
+                  </h1>
+                  <p style={{ fontSize: "1.25rem" }}>{slide.subtitle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Nút Prev */}
+          <button onClick={prevSlide} style={{ ...navBtnStyle, left: "10px" }}>
+            ❮
+          </button>
+
+          {/* Nút Next */}
+          <button onClick={nextSlide} style={{ ...navBtnStyle, right: "10px" }}>
+            ❯
+          </button>
+        </div>
+
+        {/* Dots */}
+        <div style={{ textAlign: "center", marginTop: "10px" }}>
+          {slides.map((_, i) => (
+            <span
+              key={i}
+              onClick={() => setCurrentSlide(i)}
+              style={{
+                height: "12px",
+                width: "12px",
+                margin: "0 5px",
+                backgroundColor: currentSlide === i ? "#333" : "#bbb",
+                borderRadius: "50%",
+                display: "inline-block",
+                cursor: "pointer",
+                transition: "0.3s",
+              }}
+            ></span>
+          ))}
         </div>
       </div>
 
-      {/* Product List Section */}
+      {/* ==== PRODUCT LIST ==== */}
       <h2
         style={{
           marginBottom: "25px",
