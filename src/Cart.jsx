@@ -74,7 +74,7 @@ const Cart = () => {
   // Tính tổng tiền
   useEffect(() => {
     const newTotal = cartItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
+      (sum, item) => sum + (item.price * item.quantity || 0),
       0
     );
     setTotal(newTotal);
@@ -119,6 +119,25 @@ const Cart = () => {
     setPaymentSuccess(true);
     localStorage.removeItem("cart");
     setCartItems([]);
+  };
+
+  // Thêm sản phẩm vào giỏ hàng
+  const addToCart = (product) => {
+    const existingItem = cartItems.find((item) => item.id === product.id);
+
+    if (existingItem) {
+      // Nếu sản phẩm đã có trong giỏ hàng, chỉ cập nhật số lượng
+      const updated = cartItems.map((item) =>
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+      setCartItems(updated);
+      updateLocalStorage(updated);
+    } else {
+      // Nếu sản phẩm chưa có trong giỏ hàng, thêm vào giỏ hàng
+      const updated = [...cartItems, { ...product, quantity: 1 }];
+      setCartItems(updated);
+      updateLocalStorage(updated);
+    }
   };
 
   return (

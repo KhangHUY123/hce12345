@@ -20,7 +20,7 @@ a {
   align-items: center;
 
   /* Màu chữ trắng/sáng để nổi bật trên nền ảnh tối */
-  color: white;
+  color: rgb(8, 8, 8);
   z-index: 100; /* Đảm bảo nó luôn nằm trên các thành phần khác */
 }
 
@@ -58,8 +58,9 @@ a {
 /* Định dạng mặc định của các item trong menu */
 .nav-item {
   text-decoration: none;
-  color: #f8f1f1;
+  color: #5c0606;
   font-size: 1rem;
+  font-weight: bold; /* Make the text bold */
   padding: 10px 15px;
   transition: color 0.3s ease;
 }

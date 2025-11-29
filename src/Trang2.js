@@ -6,7 +6,7 @@ const HomePage = () => {
   const [listProduct, setListProduct] = useState([]);
   const navigate = useNavigate();
 
-  // === FETCH PRODUCT ===
+  // === FETCH PRODUCT (Limit to 4 products) ===
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -14,7 +14,7 @@ const HomePage = () => {
           .from("product1")
           .select("*")
           .order("id", { ascending: true })
-          .limit(6); // Adjust limit based on your need
+          .limit(4); // Now it limits the product to only 4
         if (error) throw error;
 
         setListProduct(data);
@@ -41,7 +41,7 @@ const HomePage = () => {
             marginRight: "20px",
           }}
         >
-          Nam
+          <option value="Adidas">Adidas</option>
         </button>
         <button
           style={{
@@ -54,7 +54,7 @@ const HomePage = () => {
             cursor: "pointer",
           }}
         >
-          Nữ
+          <option value="Nike nữ">Nike</option>
         </button>
       </div>
 

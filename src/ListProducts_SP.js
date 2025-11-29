@@ -136,29 +136,12 @@ const ListProducts_SP = () => {
             }}
           >
             <option value="">Chọn danh mục</option>
-            <option value="Áo vest">Áo vest</option>
-            <option value="Áo khoác">Áo khoác</option>
-            <option value="Quần">Quần</option>
-            <option value="Giày">Giày</option>
-          </select>
-
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            style={{
-              padding: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ddd",
-              backgroundColor: "#0062cc", // Màu nền xanh đậm
-              color: "white", // Màu chữ trắng
-              fontSize: "1rem",
-              transition: "all 0.3s",
-              cursor: "pointer",
-            }}
-          >
-            <option value="">Chọn giới tính</option>
-            <option value="Nam">Nam</option>
-            <option value="Nữ">Nữ</option>
+            <option value="Nike nữ">Nike nữ</option>
+            <option value="Adidas">Adidas</option>
+            <option value="Puma">Puma</option>
+            <option value="Under Armour">Under Armour</option>
+            <option value="Mizuno ">Mizuno </option>
+            <option value="Hoka ">Hoka </option>
           </select>
         </div>
       </div>
