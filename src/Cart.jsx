@@ -36,7 +36,7 @@ const Cart = () => {
       const merged = data.map((product) => {
         const cartItem = cart.find((c) => c.id === product.id);
         return {
-          ...product, // Đảm bảo quantity là số hợp lệ, mặc định là 1
+          ...product,
           quantity: parseInt(cartItem.quantity) || 1,
           price: parseFloat(product.price),
         };
@@ -73,12 +73,9 @@ const Cart = () => {
   };
 
   const decreaseQty = (id) => {
-    // 1. Tính toán số lượng mới (có thể là 0)
     const tempUpdated = cartItems.map((item) =>
-      item.id === id
-        ? { ...item, quantity: item.quantity - 1 } // KHÔNG dùng Math.max(1, ...)
-        : item
-    ); // 2. Lọc bỏ các sản phẩm có số lượng <= 0
+      item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+    );
 
     const finalUpdated = tempUpdated.filter((item) => item.quantity > 0);
 
@@ -103,12 +100,12 @@ const Cart = () => {
   return (
     <div
       style={{
-        maxWidth: "900px",
-        margin: "30px auto",
-        padding: "20px",
-        backgroundColor: "#f0f2f5", // Màu nền nhẹ
-        borderRadius: "10px",
-        boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+        maxWidth: "750px", // Giảm kích thước tối đa của container
+        margin: "20px auto", // Giảm margin
+        padding: "15px", // Giảm padding
+        backgroundColor: "#f0f2f5",
+        borderRadius: "8px", // Giảm bo tròn
+        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
         fontFamily: "'Arial', sans-serif",
       }}
     >
@@ -117,12 +114,12 @@ const Cart = () => {
         style={{
           textAlign: "center",
           color: "#333",
-          marginBottom: "30px",
-          fontSize: "2.2em",
+          marginBottom: "20px", // Giảm margin
+          fontSize: "1.8em", // Giảm cỡ chữ tiêu đề
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: "15px",
+          gap: "10px", // Giảm gap
           fontWeight: "600",
         }}
       >
@@ -134,7 +131,7 @@ const Cart = () => {
       </h2>
            {" "}
       {cartItems.length === 0 ? (
-        <p style={{ textAlign: "center", fontSize: "1.1em", color: "#666" }}>
+        <p style={{ textAlign: "center", fontSize: "1em", color: "#666" }}>
                     Chưa có sản phẩm nào trong giỏ hàng.        {" "}
         </p>
       ) : (
@@ -146,13 +143,13 @@ const Cart = () => {
               style={{
                 display: "flex",
                 alignItems: "center",
-                padding: "20px",
+                padding: "15px", // Giảm padding item
                 borderBottom: "1px solid #e0e0e0",
-                gap: "30px",
+                gap: "20px", // Giảm gap
                 backgroundColor: "#fff",
-                borderRadius: "8px",
-                marginBottom: "15px",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+                borderRadius: "6px", // Giảm bo tròn
+                marginBottom: "10px",
+                boxShadow: "0 1px 4px rgba(0, 0, 0, 0.05)",
               }}
             >
                            {" "}
@@ -160,10 +157,10 @@ const Cart = () => {
                 src={item.image}
                 alt={item.title}
                 style={{
-                  width: "100px",
-                  height: "100px",
+                  width: "80px", // Thu nhỏ ảnh
+                  height: "80px", // Thu nhỏ ảnh
                   objectFit: "cover",
-                  borderRadius: "8px",
+                  borderRadius: "6px",
                   border: "1px solid #e0e0e0",
                 }}
               />
@@ -172,8 +169,8 @@ const Cart = () => {
                                {" "}
                 <h4
                   style={{
-                    margin: "0 0 8px 0",
-                    fontSize: "1.2em",
+                    margin: "0 0 5px 0",
+                    fontSize: "1.1em", // Giảm cỡ chữ
                     color: "#333",
                   }}
                 >
@@ -185,22 +182,24 @@ const Cart = () => {
                     margin: 0,
                     color: "#e63946",
                     fontWeight: "bold",
-                    fontSize: "1.1em",
+                    fontSize: "1em", // Giảm cỡ chữ
                   }}
                 >
                                     {formatCurrency(item.price)}               {" "}
                 </p>
                              {" "}
               </div>
-                            {/* Cấu trúc Quantity */}             {" "}
+                           {" "}
+              {/* Cấu trúc Quantity (đã giữ nguyên kích thước nhỏ) */}         
+                 {" "}
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   border: "1px solid #ccc",
-                  borderRadius: "5px",
+                  borderRadius: "4px", // Giảm bo tròn
                   overflow: "hidden",
-                  minWidth: "120px",
+                  minWidth: "90px",
                 }}
               >
                                {" "}
@@ -209,9 +208,9 @@ const Cart = () => {
                   style={{
                     background: "#f0f0f0",
                     border: "none",
-                    padding: "8px 12px",
+                    padding: "6px 8px",
                     cursor: "pointer",
-                    fontSize: "1.1em",
+                    fontSize: "1em",
                     borderRight: "1px solid #ccc",
                   }}
                 >
@@ -220,10 +219,10 @@ const Cart = () => {
                                {" "}
                 <span
                   style={{
-                    padding: "8px 0",
+                    padding: "6px 0",
                     textAlign: "center",
-                    width: "40px",
-                    fontSize: "1.1em",
+                    width: "30px",
+                    fontSize: "1em",
                     color: "#333",
                   }}
                 >
@@ -235,9 +234,9 @@ const Cart = () => {
                   style={{
                     background: "#f0f0f0",
                     border: "none",
-                    padding: "8px 12px",
+                    padding: "6px 8px",
                     cursor: "pointer",
-                    fontSize: "1.1em",
+                    fontSize: "1em",
                     borderLeft: "1px solid #ccc",
                   }}
                 >
@@ -249,13 +248,13 @@ const Cart = () => {
               <button
                 onClick={() => removeItem(item.id)}
                 style={{
-                  background: "#e74c3c", // Màu đỏ nổi bật
+                  background: "#e74c3c",
                   color: "white",
                   border: "none",
-                  padding: "10px 18px",
-                  borderRadius: "5px",
+                  padding: "8px 15px",
+                  borderRadius: "4px", // Giảm bo tròn
                   cursor: "pointer",
-                  fontSize: "1em",
+                  fontSize: "0.9em",
                   transition: "background-color 0.2s ease",
                 }}
                 onMouseOver={(e) =>
@@ -276,14 +275,14 @@ const Cart = () => {
               display: "flex",
               justifyContent: "flex-end",
               alignItems: "baseline",
-              marginTop: "30px",
-              borderTop: "2px solid #e0e0e0",
-              paddingTop: "20px",
-              gap: "20px",
+              marginTop: "20px", // Giảm margin
+              borderTop: "1px solid #e0e0e0", // Giảm độ dày border
+              paddingTop: "15px", // Giảm padding
+              gap: "10px",
             }}
           >
                        {" "}
-            <h3 style={{ margin: 0, fontSize: "1.5em", color: "#333" }}>
+            <h3 style={{ margin: 0, fontSize: "1.3em", color: "#333" }}>
                             Tổng tiền:              {" "}
               <span style={{ color: "#e63946", fontWeight: "bold" }}>
                                 {formatCurrency(total)}             {" "}
@@ -296,15 +295,15 @@ const Cart = () => {
           <button
             onClick={handleCheckout}
             style={{
-              padding: "15px 30px",
-              backgroundColor: "#2ecc71", // Màu xanh lá cây
+              padding: "12px 20px", // Giảm padding
+              backgroundColor: "#2ecc71",
               color: "white",
               border: "none",
-              borderRadius: "8px",
+              borderRadius: "6px",
               cursor: "pointer",
-              marginTop: "25px",
+              marginTop: "15px", // Giảm margin
               width: "100%",
-              fontSize: "1.2em",
+              fontSize: "1.1em", // Giảm cỡ chữ
               fontWeight: "600",
               transition: "background-color 0.2s ease",
             }}
