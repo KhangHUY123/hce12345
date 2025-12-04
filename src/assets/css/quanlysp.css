@@ -2,64 +2,65 @@
     RESET + GLOBAL
 ------------------------------ */
 body {
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  background: #eef1f6;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f2f4f8;
   margin: 0;
   padding: 0;
+  color: #2d3e50;
+}
+
+.container {
+  max-width: 1150px;
+  margin: 32px auto;
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.08);
 }
 
 /* ------------------------------
-    WRAPPER CHÍNH
+    TITLE
 ------------------------------ */
-.container {
-  max-width: 1100px;
-  margin: 30px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-}
-
 h2 {
   margin-top: 0;
-  font-size: 28px;
+  font-size: 30px;
   text-align: center;
-  color: #2d3e50;
-  font-weight: bold;
+  color: #1e2a38;
+  font-weight: 700;
 }
 
 /* ------------------------------
     NÚT ĐĂNG XUẤT
 ------------------------------ */
 .logout-btn {
-  display: inline-block;
-  background: #dc3545;
-  padding: 10px 16px;
-  color: white;
-  border-radius: 6px;
+  background: #e63946;
+  padding: 11px 18px;
+  color: #fff;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
   float: right;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   text-decoration: none;
+  transition: 0.25s;
 }
 
 .logout-btn:hover {
-  background: #c82333;
+  background: #c92d38;
 }
 
 /* ------------------------------
-    NÚT PHÍA TRÊN BẢNG
+    ACTIONS TRÊN BẢNG
 ------------------------------ */
 .table-actions {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .table-actions .left {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 /* ------------------------------
@@ -69,127 +70,144 @@ h2 {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
+  background: #ffffff;
 }
 
 .product-table th,
 .product-table td {
-  border: 1px solid #e2e2e2;
-  padding: 10px;
+  padding: 12px 11px;
+  border-bottom: 1px solid #e5e7eb;
   text-align: left;
+  font-size: 15px;
 }
 
 .product-table th {
-  background: #f4f6fa;
-  color: #333;
+  background: #f8fafc;
+  color: #374151;
   font-weight: 700;
+  border-bottom: 2px solid #e0e4ea;
 }
 
 .product-table tr:hover {
-  background-color: #f9fbff;
+  background-color: #f4f7fb;
 }
 
 .thumb {
-  width: 60px;
-  height: 60px;
+  width: 65px;
+  height: 65px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
 }
 
 /* ------------------------------
-    NÚT CHUNG
+    BUTTONS
 ------------------------------ */
 .btn {
   border: none;
-  padding: 7px 14px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  color: white;
   font-size: 14px;
   font-weight: 600;
+  transition: all 0.25s;
+  display: inline-block;
 }
 
 .btn.green {
-  background-color: #28a745;
+  background-color: #2ecc71;
+  color: white;
 }
+
 .btn.red {
-  background-color: #dc3545;
+  background-color: #e74c3c;
+  color: white;
 }
+
 .btn.yellow {
-  background-color: #ffc107;
-  color: black;
+  background-color: #f1c40f;
+  color: #000;
 }
+
 .btn.blue {
-  background-color: #007bff;
+  background-color: #3498db;
+  color: white;
 }
+
 .btn.gray {
-  background-color: #6c757d;
+  background-color: #95a5a6;
+  color: white;
 }
 
 .btn:hover {
-  filter: brightness(0.9);
+  transform: translateY(-1px);
+  filter: brightness(0.92);
 }
 
 /* ------------------------------
-    FORM THÊM / SỬA SẢN PHẨM
+    FORM THÊM / SỬA
 ------------------------------ */
 .form-wrapper {
   background: white;
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 12px;
-  border: 1px solid #dfe3e8;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  margin-top: 24px;
+  border-radius: 14px;
+  border: 1px solid #e3e7ee;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
 }
 
 label {
   font-weight: 600;
-  color: #333;
+  color: #2d3e50;
   display: flex;
   flex-direction: column;
+  font-size: 15px;
 }
 
 input {
-  padding: 9px;
-  border: 1px solid #c8ccd4;
-  border-radius: 6px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   font-size: 15px;
   background: #fdfdfd;
+  transition: 0.25s;
 }
 
 input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 3px rgba(0, 123, 255, 0.4);
+  border-color: #3b82f6;
+  background: #ffffff;
+  box-shadow: 0 0 4px rgba(59, 130, 246, 0.4);
   outline: none;
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 /* ------------------------------
-    CARD SẢN PHẨM (Grid mode)
+    CARD SẢN PHẨM (GRID MODE)
 ------------------------------ */
 .card {
-  background: white;
-  border-radius: 12px;
-  padding: 14px;
-  border: 1px solid #dfe3e8;
-  transition: 0.2s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid #e3e7ee;
+  transition: all 0.25s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }

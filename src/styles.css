@@ -339,3 +339,83 @@ a {
     max-width: 100%;
   }
 }
+/* ---------------- CONTACT PAGE ---------------- */
+.contact-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.contact-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.contact-content {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+/* ===== FORM ===== */
+.contact-form {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-form label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 15px;
+  margin-bottom: 15px;
+  transition: 0.2s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #000;
+}
+
+.contact-btn {
+  background: #000;
+  color: #fff;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+}
+
+.contact-btn:hover {
+  background: #333;
+}
+
+/* ===== INFO + MAP ===== */
+.contact-info {
+  flex: 1;
+  min-width: 300px;
+}
+
+.contact-info h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.contact-info p {
+  font-size: 15px;
+  margin: 6px 0;
+}

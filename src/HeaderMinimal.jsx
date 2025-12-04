@@ -6,7 +6,7 @@ const HeaderMinimal = ({ cartItemCount }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
-  // Load user từ localStorage khi mở trang
+  // Load user từ localStorage
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
@@ -20,13 +20,11 @@ const HeaderMinimal = ({ cartItemCount }) => {
     navigate("/");
   };
 
-  // ROLE admin = 1
   const isAdmin = user && user.role === 1;
 
-  // Khi bấm vào Admin Dashboard
   const handleAdminClick = (e) => {
     if (!isAdmin) {
-      e.preventDefault(); // chặn điều hướng
+      e.preventDefault();
       alert("❌ Bạn không có quyền truy cập trang Admin!");
     }
   };
@@ -44,23 +42,27 @@ const HeaderMinimal = ({ cartItemCount }) => {
       </div>
 
       <nav className="nav-menu">
-        <NavLink to="/Trang2" className="nav-item">
+        {/* HOME */}
+        <NavLink to="/trang2" className="nav-item">
           Home
         </NavLink>
 
+        {/* ABOUT */}
         <NavLink to="/about" className="nav-item">
           About Us
         </NavLink>
 
+        {/* SHOP */}
         <NavLink to="/" className="nav-item">
           Shop
         </NavLink>
 
-        <NavLink to="/Trang1" className="nav-item">
+        {/* CONTACT — ĐÃ CẬP NHẬT route mới */}
+        <NavLink to="/contact" className="nav-item">
           Contact Us
         </NavLink>
 
-        {/* luôn hiện Admin Dashboard */}
+        {/* ADMIN */}
         <NavLink
           to="/admin/products"
           className={`nav-item nav-admin ${!isAdmin ? "disabled-admin" : ""}`}
@@ -69,7 +71,7 @@ const HeaderMinimal = ({ cartItemCount }) => {
           Admin Dashboard
         </NavLink>
 
-        {/* Hiện login / logout */}
+        {/* LOGIN / LOGOUT */}
         {user ? (
           <button
             onClick={handleLogout}
@@ -90,11 +92,10 @@ const HeaderMinimal = ({ cartItemCount }) => {
         )}
       </nav>
 
-      {/* Giỏ hàng */}
+      {/* CART */}
       <div className="cart-section">
         <Link to="/cart" className="cart-icon-link">
-          🛒
-          <span className="cart-count">{cartItemCount || 0}</span>
+          🛒<span className="cart-count">{cartItemCount || 0}</span>
         </Link>
       </div>
     </header>

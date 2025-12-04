@@ -8,8 +8,6 @@ import Trang1 from "./Trang1";
 // @ts-ignore
 import Chitietsanpham from "./Chitietsanpham";
 // @ts-ignore
-import ListProducts from "./ListProducts";
-// @ts-ignore
 import ListProducts_SP from "./ListProducts_SP";
 // @ts-ignore
 import Trang2 from "./Trang2";
@@ -24,35 +22,50 @@ import ProtectedRoute from "./ProtectedRoute";
 // @ts-ignore
 import ListProducts_SP_Admin from "./ListProducts_SP_Admin";
 
-// ⭐ THÊM GIỎ HÀNG
+import AboutPage from "./AboutPage";
+
+// ⭐ GIỎ HÀNG
 // @ts-ignore
 import Cart from "./Cart";
 // @ts-ignore
-import PaymentPage from "./PaymentPage"; // Import the PaymentPage component
+import PaymentPage from "./PaymentPage";
+
+// ⭐⭐ TRANG LIÊN HỆ — vừa thêm
+import ContactPage from "./ContactPage";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* ROUTE CHA: LAYOUT */}
+        {/* ROUTE CHA (có header + footer) */}
         <Route path="/" element={<Layout />}>
-          {/* Trang Chủ */}
+          {/* Trang Home */}
           <Route index element={<ListProducts_SP />} />
-          {/* Trang Chi tiết Sản phẩm */}
+
+          {/* About Page */}
+          <Route path="about" element={<AboutPage />} />
+
+          {/* ⭐⭐ Contact Page */}
+          <Route path="contact" element={<ContactPage />} />
+
+          {/* Trang chi tiết sản phẩm */}
           <Route path="sanpham/:id" element={<Chitietsanpham />} />
-          {/* ROUTE THỪA - vẫn giữ */}
           <Route path="Chitietsanpham" element={<Chitietsanpham />} />
+
+          {/* Trang khác */}
           <Route path="trang2" element={<Trang2 />} />
-          {/* ⭐ TRANG GIỎ HÀNG */}
+
+          {/* Giỏ hàng */}
           <Route path="cart" element={<Cart />} />
-          {/* Trang thanh toán */}
-          <Route path="payment" element={<PaymentPage />} />{" "}
-          {/* Added PaymentPage route */}
-          {/* Trang đăng nhập */}
+
+          {/* Thanh toán */}
+          <Route path="payment" element={<PaymentPage />} />
+
+          {/* Login / Logout */}
           <Route path="login" element={<LoginPage />} />
-          {/* Trang đăng xuất */}
           <Route path="logout" element={<LogoutPage />} />
-          {/* Trang Admin */}
+
+          {/* Admin */}
           <Route
             path="admin/products"
             element={
