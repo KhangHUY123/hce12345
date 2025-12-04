@@ -1,156 +1,138 @@
-/* 🌐 Modern Login Style inspired by Google / Facebook (2025) */
-@import url("https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600&display=swap");
-
-body {
-  font-family: "Google Sans", Roboto, sans-serif;
-  background: #f7f9fc;
-  margin: 0;
-  padding: 0;
-}
+/*
+ * Đã khắc phục lỗi SyntaxError (do ký tự khoảng trắng đặc biệt) và
+ * điều chỉnh margin/padding để có giao diện gọn gàng, cô đọng.
+ */
 
 .login-wrapper {
+  /* Đảm bảo form luôn ở giữa trang */
   display: flex;
-  align-items: center;
   justify-content: center;
-  min-height: 90vh;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f7f7f7;
+  padding: 10px;
 }
 
 .login-card {
+  /* Giảm padding tổng thể bên trong form và giữ chiều rộng tối đa */
+  width: 100%;
+  max-width: 400px;
   background: #fff;
-  width: 380px;
-  padding: 40px 36px;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  text-align: center;
-  transition: transform 0.2s ease;
-}
-
-.login-card:hover {
-  transform: translateY(-3px);
+  padding: 10px 30px; /* Giảm padding ngang/dọc để thu gọn form */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .login-logo {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 8px;
-}
-
-.login-title {
-  font-size: 22px;
-  color: #202124;
-  margin: 6px 0;
-}
-
-.login-subtitle {
-  color: #5f6368;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.login-form {
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.form-group label {
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 4px;
+  /* Giảm margin dưới logo */
+  width: 60px;
+  height: 60px;
   display: block;
+  margin: 0 auto 10px auto;
 }
 
-.form-group input {
+.auth-tabs {
+  display: flex;
+  margin-bottom: 1px; /* Giảm khoảng cách sau tabs */
+  border-bottom: 2px solid #eee;
+}
+
+.auth-tab {
+  padding: 5px 0; /* Giảm padding trên dưới của tabs */
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  color: #999;
+  border-bottom: 3px solid transparent;
+  transition: color 0.3s, border-bottom 0.3s;
+  width: 50%;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.auth-tab.active {
+  color: #333;
+  border-bottom: 3px solid #007bff;
+}
+
+.login-form label {
+  display: block;
+  margin-bottom: 4px; /* Giảm khoảng cách từ label đến input */
+  margin-top: 8px; /* Giảm khoảng cách từ input trước đến label này */
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.login-form input {
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #dadce0;
+  padding: 8px; /* Tối ưu padding cho input */
+  border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 16px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.login-form input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
   outline: none;
-  transition: 0.2s;
 }
 
-.form-group input:focus {
-  border-color: #1a73e8;
-  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
-}
-
-button[type="submit"] {
+.login-form button[type="submit"] {
   width: 100%;
-  margin-top: 8px;
-  padding: 12px 0;
-  background: #1a73e8;
+  padding: 12px;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 8px;
-  font-weight: 500;
-  font-size: 15px;
+  font-size: 17px;
+  font-weight: bold;
   cursor: pointer;
-  transition: 0.25s ease;
+  margin-top: 15px; /* Giảm khoảng cách từ input cuối đến nút submit */
+  transition: background-color 0.3s, opacity 0.3s;
 }
 
-button[type="submit"]:hover {
-  background: #1669c1;
+.login-form button[type="submit"]:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 
-button[disabled] {
-  opacity: 0.6;
+.login-form button[type="submit"]:disabled {
+  background-color: #a0c9f8;
   cursor: not-allowed;
+  opacity: 0.8;
 }
 
-.register-link {
-  margin-top: 18px;
-  font-size: 13.5px;
-  color: #5f6368;
-}
-
-.register-link a {
-  color: #1a73e8;
+.forgot-password {
+  display: block;
+  text-align: center;
+  margin: 10px 0 15px 0; /* Giảm margin xung quanh link */
+  color: #007bff;
   text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: color 0.3s;
 }
 
-.register-link a:hover {
+.forgot-password:hover {
   text-decoration: underline;
 }
 
-/* --- Social Buttons --- */
-.social-login {
-  margin-top: 24px;
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
-
-.social-btn {
+.social-login-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border: 1px solid #dadce0;
-  border-radius: 8px;
-  background: #fff;
-  font-size: 14px;
-  font-weight: 500;
-  color: #3c4043;
-  cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
+  justify-content: center;
+  gap: 10px;
+  transition: opacity 0.3s;
 }
 
-.social-btn img {
-  width: 20px;
-  height: 20px;
+.social-login-btn:hover {
+  opacity: 0.9;
 }
-
-.social-btn:hover {
-  background: #f1f3f4;
-}
-
-.google span {
-  color: #202124;
-}
-
-.facebook span {
-  color: #1877f2;
-}
-

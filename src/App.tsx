@@ -21,6 +21,8 @@ import LogoutPage from "./LogoutPage";
 import ProtectedRoute from "./ProtectedRoute";
 // @ts-ignore
 import ListProducts_SP_Admin from "./ListProducts_SP_Admin";
+// @ts-ignore
+import RegisterPage from "./RegisterPage";
 
 import AboutPage from "./AboutPage";
 
@@ -30,14 +32,14 @@ import Cart from "./Cart";
 // @ts-ignore
 import PaymentPage from "./PaymentPage";
 
-// ⭐⭐ TRANG LIÊN HỆ — vừa thêm
+// ⭐⭐ TRANG LIÊN HỆ
 import ContactPage from "./ContactPage";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* ROUTE CHA (có header + footer) */}
+        {/* ROUTE CHA (có Header + Footer) */}
         <Route path="/" element={<Layout />}>
           {/* Trang Home */}
           <Route index element={<ListProducts_SP />} />
@@ -45,7 +47,7 @@ export default function App() {
           {/* About Page */}
           <Route path="about" element={<AboutPage />} />
 
-          {/* ⭐⭐ Contact Page */}
+          {/* Contact Page */}
           <Route path="contact" element={<ContactPage />} />
 
           {/* Trang chi tiết sản phẩm */}
@@ -64,6 +66,9 @@ export default function App() {
           {/* Login / Logout */}
           <Route path="login" element={<LoginPage />} />
           <Route path="logout" element={<LogoutPage />} />
+
+          {/* Đăng ký */}
+          <Route path="register" element={<RegisterPage />} />
 
           {/* Admin */}
           <Route
