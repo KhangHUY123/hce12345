@@ -14,9 +14,9 @@ const HomePage = () => {
           .from("product1")
           .select("*")
           .order("id", { ascending: true })
-          .limit(4); // Now it limits the product to only 4
-        if (error) throw error;
+          .limit(4);
 
+        if (error) throw error;
         setListProduct(data);
       } catch (err) {
         console.error("Lỗi khi lấy dữ liệu:", err.message);
@@ -27,11 +27,77 @@ const HomePage = () => {
 
   return (
     <div style={{ padding: "0 20px" }}>
+      {/* ====== CSS ANIMATION MARQUEE ====== */}
+      <style>
+        {`
+            @keyframes marqueeMove {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-100%); }
+            }
+        `}
+      </style>
+      {/* ====== MARQUEE FULL SCREEN ====== */}
+      <div
+        style={{
+          width: "100vw",
+          marginLeft: "calc(50% - 50vw)", // ép full màn hình thật sự
+          overflow: "hidden",
+          background: "#000",
+          padding: "10px 0",
+          whiteSpace: "nowrap",
+          position: "relative",
+          zIndex: 10,
+        }}
+      >
+        <div
+          style={{
+            display: "inline-flex",
+            animation: "marqueeMove 25s linear infinite",
+          }}
+        >
+          <span
+            style={{ color: "#fff", marginRight: "60px", fontSize: "16px" }}
+          >
+            MIỄN PHÍ SHIP | BẢO HÀNH 365 NGÀY | ĐỔI SIZE MIỄN PHÍ
+          </span>
+          <span
+            style={{ color: "#fff", marginRight: "60px", fontSize: "16px" }}
+          >
+            HÀNG MỚI 2024 | GIÁ SIÊU ƯU ĐÃI
+          </span>
+          <span
+            style={{ color: "#fff", marginRight: "60px", fontSize: "16px" }}
+          >
+            FLASH SALE -50% | CHỈ HÔM NAY
+          </span>
+          <span
+            style={{ color: "#fff", marginRight: "60px", fontSize: "16px" }}
+          >
+            FLASH SALE -50% | CHỈ HÔM NAY
+          </span>
+          <span
+            style={{ color: "#fff", marginRight: "60px", fontSize: "16px" }}
+          >
+            FLASH SALE -50% | CHỈ HÔM NAY
+          </span>
+          <span
+            style={{ color: "#fff", marginRight: "60px", fontSize: "16px" }}
+          >
+            FLASH SALE -50% | CHỈ HÔM NAY
+          </span>
+          <span
+            style={{ color: "#fff", marginRight: "60px", fontSize: "16px" }}
+          >
+            FLASH SALE -50% | CHỈ HÔM NAY
+          </span>
+        </div>
+      </div>
+
       {/* ==== CATEGORY BUTTONS ==== */}
       <div style={{ textAlign: "center", marginBottom: "30px" }}>
         <button
           style={{
-            padding: "10px 20px",
+            padding: "5px 10px",
             fontSize: "1rem",
             backgroundColor: "#000",
             color: "#fff",
@@ -41,11 +107,12 @@ const HomePage = () => {
             marginRight: "20px",
           }}
         >
-          <option value="Adidas">Adidas</option>
+          Adidas
         </button>
+
         <button
           style={{
-            padding: "10px 20px",
+            padding: "5px 10px",
             fontSize: "1rem",
             backgroundColor: "#000",
             color: "#fff",
@@ -54,7 +121,7 @@ const HomePage = () => {
             cursor: "pointer",
           }}
         >
-          <option value="Nike nữ">Nike</option>
+          Nike
         </button>
       </div>
 
@@ -64,7 +131,7 @@ const HomePage = () => {
           width: "100%",
           height: "350px",
           backgroundImage:
-            "url('https://cdn.shopify.com/s/files/1/0456/5070/6581/files/LP_NIKE_T9_VOMERO18_MB_V.jpg?v=1758013163&width=1280')", // Replace with your banner image URL
+            "url('https://cdn.shopify.com/s/files/1/0456/5070/6581/files/LP_NIKE_T9_VOMERO18_MB_V.jpg?v=1758013163&width=1280')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           borderRadius: "10px",
@@ -84,6 +151,7 @@ const HomePage = () => {
         >
           Bộ Sưu Tập Mới
         </div>
+
         <div
           style={{
             position: "absolute",
@@ -96,6 +164,7 @@ const HomePage = () => {
         >
           VOMERO 18 - Đệm Tối Ưu Cho Trải Nghiệm Tối Ưu
         </div>
+
         <button
           style={{
             position: "absolute",
@@ -146,8 +215,7 @@ const HomePage = () => {
               background: "#ffffff",
               boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
               transition: "transform 0.2s ease, box-shadow 0.2s ease",
-              display: "flex",
-              flexDirection: "column",
+              position: "relative",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-6px)";
@@ -187,11 +255,11 @@ const HomePage = () => {
                 margin: "10px 0 8px",
                 fontSize: "1.1rem",
                 color: "#333",
-                flexGrow: "1",
               }}
             >
               {p.title}
             </h4>
+
             <p
               style={{
                 color: "#e63946",
@@ -202,6 +270,7 @@ const HomePage = () => {
             >
               {p.price.toLocaleString()}₫
             </p>
+
             {/* Promotion Badge */}
             <div
               style={{
