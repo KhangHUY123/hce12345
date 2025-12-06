@@ -1,6 +1,77 @@
+/* Ảnh sản phẩm nhỏ giống bảng */
 .product-img {
-  width: 100%;
-  height: 150px; /* Chiều cao cố định cho ảnh */
+  width: 60px; /* FIX: nhỏ lại như hình */
+  height: 60px;
   object-fit: cover;
-  /* ... */
+  border-radius: 6px;
+}
+
+/* Card từng dòng sản phẩm */
+.card-admin {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 120px 120px;
+  align-items: center;
+
+  background: #fff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #e4e4e4;
+  gap: 16px;
+}
+
+.card-admin:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Tên sản phẩm */
+.product-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Giá */
+.product-price {
+  font-weight: bold;
+  text-align: left;
+  color: #333;
+}
+
+/* Đánh giá */
+.product-rating {
+  color: #555;
+  font-size: 14px;
+}
+
+/* Nút thao tác */
+.btn-yellow {
+  background: #f4b400;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-right: 6px;
+}
+
+.btn-red {
+  background: #d93025;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn-yellow:hover {
+  background: #d39e00;
+}
+
+.btn-red:hover {
+  background: #b82318;
+}
+
+/* Bố cục danh sách */
+.grid {
+  display: flex !important;
+  flex-direction: column;
+  gap: 12px;
 }
